@@ -1,0 +1,16 @@
+{
+    "mainAccount":{
+               "email":"",
+               "password":"",
+               "accountName":""
+    },
+    "upvoteQuestionAccounts":[
+    {
+       "email":"",
+       "password":""
+    }
+    ],
+    "category":"",
+    "answerFileName":"",
+    "questionsFileName":""
+}
