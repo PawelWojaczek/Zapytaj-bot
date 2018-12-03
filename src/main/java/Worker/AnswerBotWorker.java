@@ -55,6 +55,7 @@ public class AnswerBotWorker {
         mainPage.dismissPopupIfVisible();
         if (mainPage.isLoginPossible()) {
             LoginPage loginPage = mainPage.clickLoginButton();
+            mainPage.dismissPopupIfVisible();
             loginPage.login(mainAccount.getEmail(), mainAccount.getPassword());
         }
         QuestionsPage questionsPage = mainPage.chooseCategory(category);

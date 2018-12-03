@@ -77,6 +77,7 @@ public class UpvoteAnswerWorker {
                 mainPage.dismissPopupIfVisible();
                 if (mainPage.isLoginPossible()) {
                     LoginPage loginPage = mainPage.clickLoginButton();
+                    mainPage.dismissPopupIfVisible();
                     loginPage.login(account.getEmail(), account.getPassword());
                 }
             } catch (Exception e) {
