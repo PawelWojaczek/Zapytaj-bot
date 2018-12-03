@@ -17,6 +17,8 @@ import java.util.List;
 public class QuestionsPage {
     private static final String QUESTIONS_LINKS_CSS = "ul[class*='item-list'] li h3 a[href*='/Category']";
     private static final String NEXT_PAGE_BUTTON_CSS = "a[class='pagingx'][rel='next']";
+    private static final String NITRO_POPUP_CSS = "div[id='nitro-block']";
+    private static final String NITRO_POPUP_CLOSE_BUTTON_CSS = "span[id='nitro-close']";
 
     private static final Logger LOG = LoggerFactory.getLogger(QuestionsPage.class);
 
@@ -29,6 +31,12 @@ public class QuestionsPage {
 
     @FindBy(css = NEXT_PAGE_BUTTON_CSS)
     private WebElement nextPageButton;
+
+    @FindBy(css = NITRO_POPUP_CSS)
+    private WebElement nitroPopup;
+
+    @FindBy(css = NITRO_POPUP_CLOSE_BUTTON_CSS)
+    private WebElement nitroPopupCloseButton;
 
 
     public QuestionsPage(WebDriver driver) {
@@ -46,13 +54,20 @@ public class QuestionsPage {
                         .executeScript("window.open('')");
                 QuestionPage questionPage = switchToEmptyWindow(link);
                 driver.get(link);
-                AnswerPage answerPage = questionPage.clickAnswerButton();
-                answerPage.addAnswer(answerToSend);
+                try {
+                    AnswerPage answerPage = questionPage.clickAnswerButton();
+                    answerPage.addAnswer(answerToSend);
+                } catch (Exception e) {
+                    LOG.error("Could not add answer to question: " + link);
+                    driver.close();
+                }
                 QuestionsUtil.saveAnsweredQuestion(link);
                 driver.switchTo().window(pageHandler);
             }
         }
         if (moreQuestions()) {
+            dissmissNitroPopupIfVisible();
+            scrollToCenterOfElement(nextPageButton);
             nextPageButton.click();
             sendAnswers(answerToSend);
         }
@@ -96,6 +111,17 @@ public class QuestionsPage {
             }
         }
         throw new Exception("New window was not found.");
+    }
+
+    public QuestionsPage dissmissNitroPopupIfVisible() {
+        try {
+            if (nitroPopup.isDisplayed()) {
+                nitroPopupCloseButton.click();
+            }
+        } catch (Exception e) {
+
+        }
+        return this;
     }
 
     private void driverWait(int seconds) throws InterruptedException {
