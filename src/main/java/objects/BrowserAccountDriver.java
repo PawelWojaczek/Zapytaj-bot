@@ -1,15 +1,15 @@
-package Objects;
+package objects;
 
-import Objects.configFile.Account;
+import objects.configFile.Account;
 import org.openqa.selenium.WebDriver;
 
-public class AccountDriver {
+public class BrowserAccountDriver {
 
     private WebDriver driver;
     private Account account;
     private String pageHandler;
 
-    public AccountDriver(WebDriver driver, Account account, String pageHandler) {
+    public BrowserAccountDriver(WebDriver driver, Account account, String pageHandler) {
         this.driver = driver;
         this.account = account;
         this.pageHandler = pageHandler;

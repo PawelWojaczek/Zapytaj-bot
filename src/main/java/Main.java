@@ -1,7 +1,7 @@
-import Worker.AnswerBotWorker;
-import Worker.MainWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import worker.AnswerBotWorker;
+import worker.MainWorker;
 
 import java.util.Scanner;
 

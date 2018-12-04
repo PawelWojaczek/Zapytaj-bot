@@ -1,4 +1,4 @@
-package Objects.configFile;
+package objects.configFile;
 
 public class Account {
 

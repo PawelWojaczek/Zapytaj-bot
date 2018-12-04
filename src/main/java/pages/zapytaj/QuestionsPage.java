@@ -1,30 +1,25 @@
-package page.Zapytaj;
+package pages.zapytaj;
 
-import Objects.QuestionsUtil;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pages.components.BasicPage;
+import util.QuestionsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsPage {
+public class QuestionsPage extends BasicPage {
+    private static final Logger LOG = LoggerFactory.getLogger(QuestionsPage.class);
+
     private static final String QUESTIONS_LINKS_CSS = "ul[class*='item-list'] li h3 a[href*='/Category']";
     private static final String NEXT_PAGE_BUTTON_CSS = "a[class='pagingx'][rel='next']";
     private static final String NITRO_POPUP_CSS = "div[id='nitro-block']";
     private static final String NITRO_POPUP_CLOSE_BUTTON_CSS = "span[id='nitro-close']";
-
-    private static final Logger LOG = LoggerFactory.getLogger(QuestionsPage.class);
-
-    private final WebDriver driver;
-    private WebDriverWait wait;
-    private String pageHandler;
 
     @FindBy(css = QUESTIONS_LINKS_CSS)
     private List<WebElement> questionsLinks;
@@ -40,10 +35,7 @@ public class QuestionsPage {
 
 
     public QuestionsPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-        pageHandler = driver.getWindowHandle();
-        wait = new WebDriverWait(driver, 10);
+        super(driver);
     }
 
     public void sendAnswers(List<String> answerToSend) throws Exception {
@@ -52,7 +44,7 @@ public class QuestionsPage {
             if (!QuestionsUtil.isQuestionAlreadyAnswered(link)) {
                 ((JavascriptExecutor) driver)
                         .executeScript("window.open('')");
-                QuestionPage questionPage = switchToEmptyWindow(link);
+                QuestionPage questionPage = switchToEmptyWindow();
                 driver.get(link);
                 try {
                     AnswerPage answerPage = questionPage.clickAnswerButton();
@@ -71,15 +63,6 @@ public class QuestionsPage {
             nextPageButton.click();
             sendAnswers(answerToSend);
         }
-    }
-
-    private void scrollToCenterOfElement(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({\n" +
-                        "            behavior: 'auto',\n" +
-                        "            block: 'center',\n" +
-                        "            inline: 'center'\n" +
-                        "        });", element);
     }
 
     public List<String> getQuestionLinks() {
@@ -102,7 +85,7 @@ public class QuestionsPage {
         return false;
     }
 
-    private QuestionPage switchToEmptyWindow(String linkToMatch) throws Exception {
+    private QuestionPage switchToEmptyWindow() throws Exception {
         driverWait(2);
         for (String windowHandle : driver.getWindowHandles()) {
             driver.switchTo().window(windowHandle);
@@ -124,9 +107,4 @@ public class QuestionsPage {
         return this;
     }
 
-    private void driverWait(int seconds) throws InterruptedException {
-        synchronized (driver) {
-            driver.wait(seconds * 1000);
-        }
-    }
 }

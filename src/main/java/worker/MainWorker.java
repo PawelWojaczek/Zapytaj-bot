@@ -1,11 +1,11 @@
-package Worker;
+package worker;
 
-import Objects.QuestionsUtil;
-import Objects.configFile.ConfigData;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import objects.configFile.ConfigData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.QuestionsUtil;
 
 import java.io.FileReader;
 

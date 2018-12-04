@@ -1,32 +1,26 @@
-package page.Zapytaj;
+package pages.zapytaj;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pages.components.BasicPage;
 
 import java.util.List;
 
-public class MainPage {
+public class MainPage extends BasicPage {
+    private static final Logger LOG = LoggerFactory.getLogger(MainPage.class);
+
     private static final String LOGIN_BUTTON_CSS = "a[id='przyciskZalogujSie']";
     private static final String POPUP_CONTENT_CSS = "div[class*='cmp-popup_content']";
     private static final String POPUP_ACCEPT_BUTTON_CSS = "button[class*='cmp-intro_acceptAll']";
     private static final String CATEGORIES_LIST_CSS = "section[class*='category list-scroll'] ul li";
     private static final String PAGES_CSS = "div[class='pages']";
     private static final String NEXT_PAGE_BUTTON_CSS = "div[class='pages'] a[accesskey='x']:not(:nth-of-type(1))";
-
-    private static final Logger LOG = LoggerFactory.getLogger(MainPage.class);
-
-    private final WebDriver driver;
-    private WebDriverWait wait;
-    private String pageHandler;
 
     @FindBy(css = LOGIN_BUTTON_CSS)
     private WebElement loginButton;
@@ -48,10 +42,7 @@ public class MainPage {
 
 
     public MainPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-        pageHandler = driver.getWindowHandle();
-        wait = new WebDriverWait(driver, 10);
+        super(driver);
     }
 
     public QuestionsPage chooseCategory(String categoryToChoose) {
@@ -64,15 +55,6 @@ public class MainPage {
             }
         }
         throw new RuntimeException("Category: " + categoryToChoose + " not found");
-    }
-
-    private void scrollToCenterOfElement(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({\n" +
-                        "            behavior: 'auto',\n" +
-                        "            block: 'center',\n" +
-                        "            inline: 'center'\n" +
-                        "        });", element);
     }
 
     public boolean isLoginPossible() {
@@ -99,22 +81,5 @@ public class MainPage {
 
         }
         return this;
-    }
-
-    private void switchToWindow(String linkToMatch) throws Exception {
-        driverWait(2);
-        for (String windowHandle : driver.getWindowHandles()) {
-            driver.switchTo().window(windowHandle);
-            if (driver.getCurrentUrl().contains(linkToMatch)) {
-                return;
-            }
-        }
-        throw new Exception("New window was not found.");
-    }
-
-    private void driverWait(int seconds) throws InterruptedException {
-        synchronized (driver) {
-            driver.wait(seconds * 1000);
-        }
     }
 }

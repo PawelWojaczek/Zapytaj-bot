@@ -1,14 +1,14 @@
-package Worker;
+package worker;
 
-import Objects.configFile.MainAccount;
+import objects.configFile.MainAccount;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import page.Zapytaj.LoginPage;
-import page.Zapytaj.MainPage;
-import page.Zapytaj.QuestionsPage;
+import pages.zapytaj.LoginPage;
+import pages.zapytaj.MainPage;
+import pages.zapytaj.QuestionsPage;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

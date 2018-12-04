@@ -35,5 +35,11 @@ Bot was made with Java using Selenium WebDriver, working on multiple threads and
 
 - Fully functional version of a bot, waiting for client to make final change orders.
 
+### v 1.0
+
+- Added checking for popup to dismiss when logging in - on multiple browsers popup sometimes does not open on first page.
+
+- Prevented bot from crashing when question was created as a survey
+
 
 

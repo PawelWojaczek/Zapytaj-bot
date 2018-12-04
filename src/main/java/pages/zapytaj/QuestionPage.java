@@ -1,30 +1,23 @@
-package page.Zapytaj;
+package pages.zapytaj;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pages.components.BasicPage;
 
 import java.util.List;
 
-public class QuestionPage {
+public class QuestionPage extends BasicPage {
+    private static final Logger LOG = LoggerFactory.getLogger(QuestionPage.class);
+
     private static final String ADD_ANSWER_BUTTON_CSS = "div[class='answer-buttons'] a";
     private static final String ANSWERS_LIST_CSS = "article[class*='answer']";
     private static final String USER_INFO_NAME_CSS = "div[class='user-info'] a";
     private static final String UPVOTE_ANSWER_BUTTON_CSS = "div[class*='vote-up'] a";
-
-
-    private static final Logger LOG = LoggerFactory.getLogger(QuestionPage.class);
-
-    private final WebDriver driver;
-    private WebDriverWait wait;
-    private String pageHandler;
 
     @FindBy(css = ADD_ANSWER_BUTTON_CSS)
     private WebElement addAnswerButton;
@@ -34,10 +27,7 @@ public class QuestionPage {
 
 
     public QuestionPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-        pageHandler = driver.getWindowHandle();
-        wait = new WebDriverWait(driver, 10);
+        super(driver);
     }
 
     public AnswerPage clickAnswerButton() {
@@ -57,20 +47,5 @@ public class QuestionPage {
             }
         }
         throw new RuntimeException("No answer found to upvote");
-    }
-
-    private void scrollToCenterOfElement(WebElement element) {
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({\n" +
-                        "            behavior: 'auto',\n" +
-                        "            block: 'center',\n" +
-                        "            inline: 'center'\n" +
-                        "        });", element);
-    }
-
-    private void driverWait(int seconds) throws InterruptedException {
-        synchronized (driver) {
-            driver.wait(seconds * 1000);
-        }
     }
 }

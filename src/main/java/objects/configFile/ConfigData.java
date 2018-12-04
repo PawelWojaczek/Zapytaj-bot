@@ -1,4 +1,4 @@
-package Objects.configFile;
+package objects.configFile;
 
 import java.util.List;
 

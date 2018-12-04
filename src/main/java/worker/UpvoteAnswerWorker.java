@@ -1,16 +1,16 @@
-package Worker;
+package worker;
 
-import Objects.AccountDriver;
-import Objects.QuestionsUtil;
-import Objects.configFile.Account;
+import objects.BrowserAccountDriver;
+import objects.configFile.Account;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import page.Zapytaj.LoginPage;
-import page.Zapytaj.MainPage;
-import page.Zapytaj.QuestionPage;
+import pages.zapytaj.LoginPage;
+import pages.zapytaj.MainPage;
+import pages.zapytaj.QuestionPage;
+import util.QuestionsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class UpvoteAnswerWorker {
     private List<WebDriver> drivers;
     private String accountNameAnswer;
     private List<Account> accounts;
-    private List<AccountDriver> accountDrivers;
+    private List<BrowserAccountDriver> browserAccountDrivers;
 
     public UpvoteAnswerWorker(String mainAccountName, List<Account> accounts) {
         this.accountNameAnswer = mainAccountName;
@@ -44,7 +44,7 @@ public class UpvoteAnswerWorker {
     }
 
     public void start() throws Exception {
-        accountDrivers = createAccountDrivers();
+        browserAccountDrivers = createAccountDrivers();
         loginToAllDrivers();
 
         while (true) {
@@ -57,21 +57,21 @@ public class UpvoteAnswerWorker {
         }
     }
 
-    public List<AccountDriver> createAccountDrivers() {
-        List<AccountDriver> accountDrivers = new ArrayList<>();
+    public List<BrowserAccountDriver> createAccountDrivers() {
+        List<BrowserAccountDriver> browserAccountDrivers = new ArrayList<>();
         for (Account account : accounts) {
             WebDriver driver = configureDriver(account.getEmail());
-            AccountDriver accountDriver = new AccountDriver(driver, account, driver.getWindowHandle());
-            accountDrivers.add(accountDriver);
+            BrowserAccountDriver browserAccountDriver = new BrowserAccountDriver(driver, account, driver.getWindowHandle());
+            browserAccountDrivers.add(browserAccountDriver);
         }
-        return accountDrivers;
+        return browserAccountDrivers;
     }
 
     public void loginToAllDrivers() throws Exception {
-        accountDrivers.parallelStream().forEach(accountDriver -> {
+        browserAccountDrivers.parallelStream().forEach(browserAccountDriver -> {
             try {
-                WebDriver driver = accountDriver.getDriver();
-                Account account = accountDriver.getAccount();
+                WebDriver driver = browserAccountDriver.getDriver();
+                Account account = browserAccountDriver.getAccount();
                 driver.get(URL);
                 MainPage mainPage = new MainPage(driver);
                 mainPage.dismissPopupIfVisible();
@@ -81,7 +81,7 @@ public class UpvoteAnswerWorker {
                     loginPage.login(account.getEmail(), account.getPassword());
                 }
             } catch (Exception e) {
-                LOG.error("Could not login to " + accountDriver.getAccount().getEmail());
+                LOG.error("Could not login to " + browserAccountDriver.getAccount().getEmail());
             }
         });
     }
@@ -92,9 +92,9 @@ public class UpvoteAnswerWorker {
     }
 
     public void upvoteAnswer(String link) throws Exception {
-        accountDrivers.parallelStream().forEach(accountDriver -> {
+        browserAccountDrivers.parallelStream().forEach(browserAccountDriver -> {
             try {
-                WebDriver driver = accountDriver.getDriver();
+                WebDriver driver = browserAccountDriver.getDriver();
                 QuestionPage questionPage = openQuestionPage(driver, link);
                 questionPage.upvoteAnswer(accountNameAnswer);
             } catch (Exception e) {
