@@ -1,8 +1,8 @@
 {
     "mainAccount":{
-               "email":"",
-               "password":"",
-               "accountName":""
+        "email":"",
+        "password":"",
+        "accountName":""
     },
     "upvoteQuestionAccounts":[
     {

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Class responsible for handling question answered. Question answered is added to file and added to "upvote queue".
+ */
 public class QuestionsUtil {
 
     private static List<String> questionsAnswered;

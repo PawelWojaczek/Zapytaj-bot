@@ -9,8 +9,11 @@ import util.QuestionsUtil;
 
 import java.io.FileReader;
 
+/**
+ * Worker that starts threads with answer and upvote workers.
+ * Possible improvement: Since there is more than one upvoteBot possible, each one should be on another thread.
+ */
 public class MainWorker {
-
     private static Logger LOG = LoggerFactory.getLogger(AnswerBotWorker.class);
 
     private ConfigData configData;

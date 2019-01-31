@@ -19,9 +19,8 @@ import java.util.concurrent.TimeUnit;
 public class UpvoteAnswerWorker {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpvoteAnswerWorker.class);
-    private static final String URL = "https://zapytaj.onet.pl/";
+    private static final String PAGE_URL = "https://zapytaj.onet.pl/";
 
-    private List<WebDriver> drivers;
     private String accountNameAnswer;
     private List<Account> accounts;
     private List<BrowserAccountDriver> browserAccountDrivers;
@@ -72,7 +71,7 @@ public class UpvoteAnswerWorker {
             try {
                 WebDriver driver = browserAccountDriver.getDriver();
                 Account account = browserAccountDriver.getAccount();
-                driver.get(URL);
+                driver.get(PAGE_URL);
                 MainPage mainPage = new MainPage(driver);
                 mainPage.dismissPopupIfVisible();
                 if (mainPage.isLoginPossible()) {

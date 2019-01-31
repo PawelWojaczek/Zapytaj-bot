@@ -3,6 +3,9 @@ package objects;
 import objects.configFile.Account;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * Class responsilbe for keeping account instances (browser + account)
+ */
 public class BrowserAccountDriver {
 
     private WebDriver driver;

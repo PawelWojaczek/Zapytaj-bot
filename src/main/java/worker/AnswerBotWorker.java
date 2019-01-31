@@ -38,7 +38,7 @@ public class AnswerBotWorker {
         String userDir = System.getProperty("user.dir");
 
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--user-data-dir=" + userDir + "/bin/profile");
+        chromeOptions.addArguments("--user-data-dir=" + userDir + "/bin/" + mainAccount.getEmail());
         WebDriver driver = new ChromeDriver(chromeOptions);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         return driver;

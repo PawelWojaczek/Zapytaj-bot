@@ -7,7 +7,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasicPage {
-
     protected WebDriver driver;
     protected String pageHandler;
     protected WebDriverWait wait;
@@ -19,24 +18,11 @@ public class BasicPage {
         this.wait = new WebDriverWait(driver, 10);
     }
 
-
     protected void driverWait(int seconds) throws InterruptedException {
         synchronized (driver) {
             driver.wait(seconds * 1000);
         }
     }
-
-    protected void switchToWindow(String linkToMatch) throws Exception {
-        driverWait(2);
-        for (String windowHandle : driver.getWindowHandles()) {
-            driver.switchTo().window(windowHandle);
-            if (driver.getCurrentUrl().contains(linkToMatch)) {
-                return;
-            }
-        }
-        throw new Exception("New window was not found.");
-    }
-
 
     protected void scrollToCenterOfElement(WebElement element) {
         ((JavascriptExecutor) driver)
